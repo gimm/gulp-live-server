@@ -1,7 +1,7 @@
 {
   "name": "gulp-live-server",
-  "version": "0.0.1",
-  "description": "serve your static folder or node app with livereload",
+  "version": "0.0.2",
+  "description": "easy light weight server with livereload",
   "homepage": "https://github.com/gimm/gulp-live-server",
   "main": "./index.js",
   "scripts": {
@@ -13,6 +13,7 @@
     "static",
     "live",
     "live-reload",
+    "connect",
     "express"
   ],
   "repository": {
@@ -25,9 +26,12 @@
   "license": "WTFPL",
   "dependencies": {
     "chalk": "^1.0.0",
+    "connect": "^3.3.4",
+    "connect-livereload": "^0.5.3",
     "debug": "^2.1.1",
     "deepmerge": "~0.2.7",
     "event-stream": "~3.2.1",
+    "serve-static": "^1.9.1",
     "tiny-lr": "0.0.9"
   },
   "readmeFilename": "README.md",
@@ -35,6 +39,7 @@
     "url": "https://github.com/gimm/gulp-live-server/issues"
   },
   "devDependencies": {
+    "gulp": "^3.8.11",
     "mocha": "^2.0.1"
   }
 }

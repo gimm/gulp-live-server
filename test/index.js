@@ -1,7 +1,8 @@
 'use strict';
 
-//TODO add tests
-describe('gulp-express', function() {
+var gls = require('../index.js');
+
+describe('gulp-live-server', function() {
 
     it('works', function(done) {
         done();
