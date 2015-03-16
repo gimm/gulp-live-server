@@ -10,6 +10,7 @@
 [7]: http://img.shields.io/badge/license-WTFPL-blue.svg?style=flat-square
 gulp-live-server is a light-weight and easy-to-use server you're going to love.
 - serve a static folder
+	
 	```js
     var gulp = require('gulp');
     var gls = require('gulp-live-server');
@@ -21,6 +22,7 @@ gulp-live-server is a light-weight and easy-to-use server you're going to love.
 	});
     ```
 - fire up your own server
+
 	```js
     gulp.task('serve', function() {
     	var server = gls.new('myapp.js');
