@@ -10,7 +10,7 @@
 [7]: http://img.shields.io/badge/license-WTFPL-blue.svg?style=flat-square
 gulp-live-server is a light-weight and easy-to-use server you're going to love.
 - serve a static folder
-	```js
+    ```js
     var gulp = require('gulp');
     var gls = require('gulp-live-server');
     gulp.task('serve', function() {
@@ -30,11 +30,6 @@ gulp-live-server is a light-weight and easy-to-use server you're going to love.
         gulp.watch('myapp.js', server.start);
 	});
     ```
-
-
-```js
-
-```
 
 ## Install
 [![NPM](https://nodei.co/npm/gulp-live-server.png?compact=true)](https://nodei.co/npm/gulp-live-server/)

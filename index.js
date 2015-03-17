@@ -5,6 +5,7 @@
 
 var util = require('util'),
     path = require('path'),
+    assert = require('assert'),
     spawn = require('child_process').spawn,
     merge = require('deepmerge'),
     tinylr = require('tiny-lr'),
@@ -13,27 +14,12 @@ var util = require('util'),
     chalk = require('chalk'),
     debug = require('debug')('gulp-live-server');
 
-var server_script = 'index.js',
-    static_script = path.join(__dirname, 'scripts/static.js'),
-    static_folder = 'public';
-
-
-var config = {
-        args: [static_script],
-        options: { cwd: undefined },
-        livereload: {
-            port: 35729
-        },
-        static: false
-    },
+var config = {},
     server = undefined, // the server child process
     lr = undefined, // tiny-lr server
     info = chalk.gray,
     error = chalk.bold.red;
 
-// config.options.cwd = process.cwd();
-config.options.env = process.env;
-config.options.env.server_ENV = 'development';
 
 var callback = {
     processExit: function (code, sig) {
@@ -63,48 +49,63 @@ var callback = {
 };
 
 /**
- * Config the server process
+ * set config data for the new server child process
  * @type {Function}
  */
 module.exports = exports = (function() {
-    return function(args, options, livereload, isstatic){
-        if(isstatic === true){
-            //arguments list should be [folder(s), port, livereload]
-            config.static = true;
-            config.args = [static_script ,args, options];
-        }else {
-            config.static = false;
-            if (typeof args === 'string' && args.length) {
-                args = [args];
-            }
-            if (util.isArray(args) && args.length) {
-                config.args = args;
-            } else {
-                config.args = [server_script];
-            }
-
-            config.options = merge(config.options, options || {});
+    var defaults = {
+        options: {
+            cwd: undefined
+        },
+        livereload: {
+            port: 35729
         }
+    };
+    defaults.options.env = process.env;
+    defaults.options.env.server_ENV = 'development';
+
+    return function(args, options, livereload){
+        config.args = args;
+        //deal with options
+        config.options = merge(defaults.options, options || {});
         //deal with livereload
-        if (livereload === false) {   //livereload disabled
-            config.livereload = false;
-        } else if (livereload) {
-            if (typeof livereload === 'object') {
-                config.livereload = livereload;
-            } else {
-                config.livereload.port = livereload;
-            }
+        if (livereload) {
+            config.livereload = (typeof livereload === 'object' ? livereload : {port: livereload});
+        }else{
+            config.livereload = (livereload === false ? false : defaults.livereload);
         }
         return exports;
     };
 })();
 
-exports.static = function (folder, port, livereload) {
-    folder = folder || process.cwd();
-    port = port || 3000;
-    return exports(folder, port, livereload, true);
+/**
+* default server script, the static server
+*/
+exports.script = path.join(__dirname, 'scripts/static.js');
+
+/**
+* create a server child process with the script file
+*/
+exports.new = function (script) {
+    if(!script){
+        return console.log(error('script file not specified.'));
+    }
+    return this([script]);
 };
 
+/**
+* create a server child process with the static server script
+*/
+exports.static = function (folder, port) {
+    var script = this.script;
+    folder = folder || process.cwd();
+    port = port || 3000;
+    return this([script, folder, port]);
+};
+
+/**
+* start/restart the server
+*/
 exports.start = function () {
     if (server) { // server already running
         debug(info('kill server'));
@@ -134,6 +135,9 @@ exports.start = function () {
     return deferred.promise;
 };
 
+/**
+* stop the server
+*/
 exports.stop = function () {
     var deferred = Q.defer();
     if (server) {
@@ -159,6 +163,9 @@ exports.stop = function () {
     return deferred.promise;
 };
 
+/**
+* tell livereload.js to reload the changed resource(s)
+*/
 exports.notify = function (event) {
     if(event && event.path){
         var filepath = path.relative(__dirname, event.path);

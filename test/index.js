@@ -5,7 +5,7 @@ var should = require('should');
 var gls = require('../index.js');
 
 describe('gulp-live-server', function () {
-    describe('default static serves', function () {
+    describe('default static server', function () {
         var server = undefined;
         var req = request('http://localhost:3000');
         before('start server', function (done) {
@@ -33,17 +33,14 @@ describe('gulp-live-server', function () {
         var server = undefined;
         var req = request('http://localhost:8000');
         before('start server', function (done) {
-            server = gls.static('example', 8000, false);
+            server = gls.static('example', 8000);
             server.start().then(function(code){
                 done();
             }).done();
         });
 
         after('stop server', function (done) {
-            console.log('after');
-            console.time('stop');
             server.stop().then(function () {
-                console.timeEnd('stop');
                 done();
             }).done();
         });
@@ -53,11 +50,12 @@ describe('gulp-live-server', function () {
                 .expect(404, done);
         });
 
-        it('should livereload not listening', function (done) {
+        it('should livereload listening', function (done) {
             request('http://localhost:35729')
                 .get('/')
                 .end(function (err, res) {
-                    err.should.have.property('code', 'ECONNREFUSED');
+                    should.equal(null);
+                    should.exist(res);
                     done();
                 });
         });
@@ -74,11 +72,20 @@ describe('gulp-live-server', function () {
         });
     });
 
-    describe('dummy', function(){
-        it('should work', function(){
-            should.ok;
-        })
+    describe('simple new server', function(){
+        var server = undefined;
+        var req = request('http://localhost:3000');
+        before('start server', function(done){
+            gls.new(gls.script).start().then(function(){
+                done();
+            }).done();
+        });
+
+        it('should listening', function(done){
+            req.get('/')
+                .expect(404, done);
+        });
     });
 
-    
+
 });
