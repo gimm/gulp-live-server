@@ -60,32 +60,51 @@ More [examples](https://github.com/gimm/gulp-live-server/tree/master/example)
 
 API
 ---
-###static([folder][,port])
+### static([folder][, port])
 - `folder` - `String|Array` The folder(s) to serve.
     Use array of strings if there're multi folders to serve.
     If omitted, defaults to `public/`.
 - `port` - `Number` The port to listen on. Defaults to `3000`.
-- return `this`.
+- return [gls](#glsargs-options-livereload).
 
 Config new server using the default server `script`, to serve the given `folder` on the specified `port`.
 
-###new(script)
+### new(script)
 - `script` - `String` The script file to run.
-- return `this`.
+- return [gls](#glsargs-options-livereload).
 
 Config new server using the given `script`.
 
-###start()
+### gls(args[, options][, livereload])
+- `args` - `Array` The 2nd param for [ChildProcess.spawn](http://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options).
+- `options` - `Object` The 3rd param for [ChildProcess.spawn](http://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options),
+will be mixin into the default value:
+
+    ```js
+        options = {
+            cwd: undefined
+        }
+        options.env = process.env;
+        options.env.NODE_ENV = 'development';
+    ```
+- `livereload` - `Boolean|Number|Object` The option for tiny-lr server. The default value is `35729`.
+    - `false` - will disable tiny-lr livereload server.
+    - `number` - treated as port number of livereload server.
+    - `object` - used to create tiny-lr server new tinylr.Server(livereload);
+
+`gls` here is a reference of `var gls = require('gulp-live-server')`. `static` and `new` are shortcuts for this.
+
+### start()
 - return [promise](https://github.com/kriskowal/q/wiki/API-Reference) from [Q](https://www.npmjs.com/package/q)
 Spawn a new child process based on the configuration.
 - use [`ChildProcess.spawn`](http://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options) to start a node process;
 - use [`tiny-lr`](https://github.com/mklabs/tiny-lr) provide livereload ability;
 
-###stop()
+### stop()
 - return [promise](https://github.com/kriskowal/q/wiki/API-Reference) from [Q](https://www.npmjs.com/package/q)
 Stop the server.
 
-###notify([event])
+### notify([event])
 - `event` - `Event` Event object passed along with [gulp.watch](https://github.com/gulpjs/gulp/blob/master/docs/API.md#cbevent).
 Optional when used with `pipe`.
 
