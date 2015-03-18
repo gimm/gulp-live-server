@@ -96,12 +96,14 @@ will be mixin into the default value:
 
 ### start()
 - return [promise](https://github.com/kriskowal/q/wiki/API-Reference) from [Q](https://www.npmjs.com/package/q)
+
 Spawn a new child process based on the configuration.
 - use [`ChildProcess.spawn`](http://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options) to start a node process;
 - use [`tiny-lr`](https://github.com/mklabs/tiny-lr) provide livereload ability;
 
 ### stop()
 - return [promise](https://github.com/kriskowal/q/wiki/API-Reference) from [Q](https://www.npmjs.com/package/q)
+
 Stop the server.
 
 ### notify([event])
