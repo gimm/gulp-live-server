@@ -1,6 +1,6 @@
 {
   "name": "gulp-live-server",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "easy light weight server with livereload",
   "homepage": "https://github.com/gimm/gulp-live-server",
   "main": "./index.js",
