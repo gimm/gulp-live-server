@@ -92,7 +92,7 @@ will be mixin into the default value:
     - `number` - treated as port number of livereload server.
     - `object` - used to create tiny-lr server new tinylr.Server(livereload);
 
-`gls` here is a reference of `var gls = require('gulp-live-server')`. `static` and `new` are shortcuts for this.
+**`gls` here is a reference of `var gls = require('gulp-live-server')`**. `static` and `new` are shortcuts for this.
 
 ### start()
 - return [promise](https://github.com/kriskowal/q/wiki/API-Reference) from [Q](https://www.npmjs.com/package/q)
