@@ -22,8 +22,10 @@ A handy, light-weight server you're going to love.
 - [API](#api)
     - [static](#staticfolderport)
     - [new](#newscript)
+    - [gls](#glsargs-options-livereload)
     - [start](#start)
     - [stop](#stop)
+    - [notify](#notifyevent)
 - [livereload.js](#livereloadjs)
 - [Debug](#debug)
 
