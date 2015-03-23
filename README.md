@@ -20,7 +20,7 @@ A handy, light-weight server you're going to love.
 - [Install](#install)
 - [Usage](#usage)
 - [API](#api)
-    - [static](#staticfolderport)
+    - [static](#staticfolder-port)
     - [new](#newscript)
     - [gls](#glsargs-options-livereload)
     - [start](#start)
