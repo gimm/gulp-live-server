@@ -1,6 +1,6 @@
 {
   "name": "gulp-live-server",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "easy light weight server with livereload",
   "homepage": "https://github.com/gimm/gulp-live-server",
   "main": "./index.js",
@@ -8,11 +8,11 @@
     "test": "mocha"
   },
   "keywords": [
-    "gulp-plugin",
+    "gulpplugin",
     "server",
     "static",
     "live",
-    "live-reload",
+    "livereload",
     "connect",
     "express"
   ],

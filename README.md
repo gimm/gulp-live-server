@@ -94,8 +94,8 @@ will be mixin into the default value:
     - `number` - treated as port number of livereload server.
     - `object` - used to create tiny-lr server new tinylr.Server(livereload);
 
-**`gls` here is a reference of `var gls = require('gulp-live-server')`**. It aims to assemble configuration for the server child process as well as the tiny-lr server.  
-**`static` and `new` are just shortcuts for this.**  
+**`gls` here is a reference of `var gls = require('gulp-live-server')`**. It aims to assemble configuration for the server child process as well as the tiny-lr server.
+**`static` and `new` are just shortcuts for this.**
 Usually, `static` and `new` will serve you well, but you can get more customized server with `gls`.
 
 ### start()
@@ -118,7 +118,7 @@ Tell livereload.js to reload the changed resource(s)
 
 livereload.js
 ---
-glup-live-server comes with [tiny-lr](https://github.com/mklabs/tiny-lr/) built in, which works as a livereload server,  
+glup-live-server comes with [tiny-lr](https://github.com/mklabs/tiny-lr/) built in, which works as a livereload server,
 In order to make livereload work with your pages, you still need `livereload.js` loaded with your page, there're 3 options to achieve this:
 - [LiveReload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en) for Chrome;
 - Use [connect-livereload](https://github.com/intesso/connect-livereload) middleware;

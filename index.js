@@ -62,7 +62,7 @@ module.exports = exports = (function() {
         }
     };
     defaults.options.env = process.env;
-    defaults.options.env.server_ENV = 'development';
+    defaults.options.env.NODE_ENV = 'development';
 
     return function(args, options, livereload){
         config.args = args;
@@ -99,7 +99,6 @@ exports.new = function (script) {
 exports.static = function (folder, port) {
     var script = this.script;
     folder = folder || process.cwd();
-    console.log(folder, util.isArray(folder));
     util.isArray(folder) && (folder = folder.join(','));
     port = port || 3000;
     return this([script, folder, port]);
