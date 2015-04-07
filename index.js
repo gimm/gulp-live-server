@@ -20,7 +20,6 @@ var config = {},
     info = chalk.gray,
     error = chalk.bold.red;
 
-
 var callback = {
     processExit: function (code, sig) {
         debug(info('Main process exited with [code => %s | sig => %s]'), code, sig);
@@ -119,20 +118,30 @@ exports.start = function () {
             lr.listen(config.livereload.port, callback.lrServerReady);
         }
     }
+
+    var deferred = Q.defer();
     server = spawn('node', config.args, config.options);
     server.stdout.setEncoding('utf8');
     server.stderr.setEncoding('utf8');
 
-    server.stdout.on('data', function(code, sig){
-        callback.serverLog(code, sig);
-        deferred.resolve(code);
+    server.stdout.on('data', function (data) {
+        deferred.notify(data);
+        callback.serverLog(data);
     });
-    server.stderr.on('data', callback.serverError);
-    server.once('exit', callback.serverExit);
+    server.stderr.on('data', function (data) {
+        deferred.notify(data);
+        callback.serverError(data);
+    });
+    server.once('exit', function (code, sig) {
+        deferred.resolve({
+            code: code,
+            signal: sig
+        });
+        callback.serverExit(code, sig);
+    });
 
     process.listeners('exit') || process.once('exit', callback.processExit);
 
-    var deferred = Q.defer();
     return deferred.promise;
 };
 

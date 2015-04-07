@@ -10,7 +10,7 @@ describe('gulp-live-server', function () {
         var req = request('http://localhost:3000');
         before('start server', function (done) {
             server = gls.static();
-            server.start().then(function(code){
+            server.start().then(null, null, function(code){
                 done();
             }).done();
         });
@@ -34,7 +34,7 @@ describe('gulp-live-server', function () {
         var req = request('http://localhost:8000');
         before('start server', function (done) {
             server = gls.static('example', 8000);
-            server.start().then(function(code){
+            server.start().then(null, null, function(code){
                 done();
             }).done();
         });
@@ -76,7 +76,7 @@ describe('gulp-live-server', function () {
         var server = undefined;
         var req = request('http://localhost:3000');
         before('start server', function(done){
-            gls.new(gls.script).start().then(function(){
+            gls.new(gls.script).start().then(null, null, function(){
                 done();
             }).done();
         });
