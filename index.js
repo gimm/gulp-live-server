@@ -64,7 +64,7 @@ module.exports = exports = (function() {
     defaults.options.env.NODE_ENV = 'development';
 
     return function(args, options, livereload){
-        config.args = args;
+        config.args = util.isArray(args) ? args : [args];
         //deal with options
         config.options = merge(defaults.options, options || {});
         //deal with livereload
@@ -120,6 +120,7 @@ exports.start = function () {
     }
 
     var deferred = Q.defer();
+    console.log(config);
     server = spawn('node', config.args, config.options);
     server.stdout.setEncoding('utf8');
     server.stderr.setEncoding('utf8');

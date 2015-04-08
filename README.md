@@ -78,7 +78,7 @@ Config new server using the [default server script](https://github.com/gimm/gulp
 Config new server using the given `script`.
 
 ### gls(args[, options][, livereload])
-- `args` - `Array` The 2nd param for [ChildProcess.spawn](http://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options).
+- `args` - `String|Array` The 2nd param for [ChildProcess.spawn](http://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options).
 - `options` - `Object` The 3rd param for [ChildProcess.spawn](http://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options),
 will be mixin into the default value:
 
@@ -129,5 +129,3 @@ Usually, you can check `http://livereload:35729/livereload.js` to see if liverel
 DEBUG
 ---
 If you want more output, set the `DEBUG` environment variables to `*` or `gulp-live-server`.
-
-

@@ -1,0 +1,33 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'version',
+1 verbose cli   'patch' ]
+2 info using npm@2.7.0
+3 info using node@v0.10.36
+4 verbose node symlink C:\Program Files\nodejs\\node.exe
+5 info git [ 'status', '--porcelain' ]
+6 verbose stack Error: Git working directory not clean.
+6 verbose stack M README.md
+6 verbose stack M index.js
+6 verbose stack M package.json
+6 verbose stack     at C:\Program Files\nodejs\node_modules\npm\lib\version.js:138:37
+6 verbose stack     at C:\Program Files\nodejs\node_modules\npm\lib\utils\git.js:26:8
+6 verbose stack     at ChildProcess.exithandler (child_process.js:656:7)
+6 verbose stack     at ChildProcess.emit (events.js:98:17)
+6 verbose stack     at maybeClose (child_process.js:766:16)
+6 verbose stack     at Socket.<anonymous> (child_process.js:979:11)
+6 verbose stack     at Socket.emit (events.js:95:17)
+6 verbose stack     at Pipe.close (net.js:466:12)
+7 verbose cwd C:\Users\IBM_ADMIN\WebstormProjects\gulp-live-server
+8 error Windows_NT 6.1.7601
+9 error argv "C:\\Program Files\\nodejs\\\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "version" "patch"
+10 error node v0.10.36
+11 error npm  v2.7.0
+12 error Git working directory not clean.
+12 error M README.md
+12 error M index.js
+12 error M package.json
+13 error If you need help, you may report this error at:
+13 error     <http://github.com/npm/npm/issues>
+14 verbose exit [ 1, true ]
