@@ -120,7 +120,6 @@ exports.start = function () {
     }
 
     var deferred = Q.defer();
-    console.log(config);
     server = spawn('node', config.args, config.options);
     server.stdout.setEncoding('utf8');
     server.stderr.setEncoding('utf8');
