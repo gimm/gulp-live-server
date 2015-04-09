@@ -89,7 +89,8 @@ exports.new = function (script) {
     if(!script){
         return console.log(error('script file not specified.'));
     }
-    return this([script]);
+    var args = util.isArray(script) ? script : [script];
+    return this(args);
 };
 
 /**

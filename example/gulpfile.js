@@ -2,10 +2,9 @@ var gulp = require('gulp');
 var gls = require('../index.js');
 
 gulp.task('static', function() {
-    var server = gls.static('static', 8888);
+    var server = gls.static('static', 8000);
     server.start();
     gulp.watch(['static/**/*.css', 'static/**/*.html'], server.notify);
-    gulp.watch(['static/**/*.html'], server.stop);
 });
 
 gulp.task('custom', function() {

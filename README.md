@@ -35,30 +35,71 @@ Install
 
 Usage
 ---
-- serve a static folder
+- Serve a static folder(`gls.script`<'scripts/static.js'> is used as server script)
 
 	```js
     var gulp = require('gulp');
     var gls = require('gulp-live-server');
     gulp.task('serve', function() {
-    	var server = gls.static();
+        //1. serve with default settings
+    	var server = gls.static(); //equals to gls.static('public', 3000);
     	server.start();
-        //live reload changed resource(s)
+
+        //2. serve at custom port
+    	var server = gls.static('dist', 8888);
+    	server.start();
+
+        //3. serve multi folders
+    	var server = gls.static(['dist', '.tmp']);
+    	server.start();
+
+        //use gulp.watch to trigger server actions(notify, start or stop)
     	gulp.watch(['static/**/*.css', 'static/**/*.html'], server.notify);
 	});
     ```
-- fire up your own server
+- Serve with your own script file
 
 	```js
     gulp.task('serve', function() {
+        //1. run your script as a server
     	var server = gls.new('myapp.js');
     	server.start();
+
+        //2. run script with cwd args, e.g. the harmony flag
+    	var server = gls.new(['--harmony', 'myapp.js']);
+        //this will achieve `node --harmony myapp.js`
+        //you can access cwd args in `myapp.js` via `process.argv`
+    	server.start();
+
+        //use gulp.watch to trigger server actions(notify, start or stop)
     	gulp.watch(['static/**/*.css', 'static/**/*.html'], server.notify);
-        //restart my server
-        gulp.watch('myapp.js', server.start);
+        gulp.watch('myapp.js', server.start); //restart my server
 	});
     ```
-More [examples](https://github.com/gimm/gulp-live-server/tree/master/example)
+
+- Customized serving with gls
+
+	```js
+    gulp.task('serve', function() {
+        //1. gls is the base for `static` and `new`
+    	var server = gls([gls.script, 'static', 8000]);
+        //equals gls.new([gls.script, 'static', 8000]);
+        //equals gls.static('static', 8000);
+    	server.start();
+
+        //2. set running options for the server, e.g. NODE_ENV
+        var server = gls('myapp.js', {env: {NODE_ENV: 'development'}});
+    	server.start();
+
+        //3. customize livereload server, e.g. port number
+        var server = gls('myapp.js', undefined, 12345);
+        server.start();
+
+        //use gulp.watch to trigger server actions(notify, start or stop)
+    	gulp.watch(['static/**/*.css', 'static/**/*.html'], server.notify);
+        gulp.watch('myapp.js', server.start); //restart my server
+    });
+    ```
 
 API
 ---
@@ -118,13 +159,12 @@ Tell livereload.js to reload the changed resource(s)
 
 livereload.js
 ---
-glup-live-server comes with [tiny-lr](https://github.com/mklabs/tiny-lr/) built in, which works as a livereload server,
-In order to make livereload work with your pages, you still need `livereload.js` loaded with your page, there're 3 options to achieve this:
+glup-live-server comes with [tiny-lr](https://github.com/mklabs/tiny-lr/) built in, which works as a livereload server. `livereload.js` is **served** by `tiny-lr`, but in order to get it loaded with your page, you have 3 options( to **inject** `<script src="//localhost:35729/livereload.js"></script>` into your page):
 - [LiveReload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en) for Chrome;
 - Use [connect-livereload](https://github.com/intesso/connect-livereload) middleware;
 - Add [livereload.js](https://github.com/livereload/livereload-js) in your page mannully;
 
-Usually, you can check `http://livereload:35729/livereload.js` to see if livereload.js is loaded with your page.
+Usually, if `http://livereload:35729/livereload.js` is accessible, then your livereload server is ok, if you don't have the script tag for livereload.js in you page, you've problem with either your chrome plugin or the connect-livereload middle-ware as mentioned above.
 
 DEBUG
 ---
