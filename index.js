@@ -121,7 +121,7 @@ exports.start = function () {
     }
 
     var deferred = Q.defer();
-    server = spawn('node', config.args, config.options);
+    server = spawn(process.execPath, config.args, config.options);
     server.stdout.setEncoding('utf8');
     server.stderr.setEncoding('utf8');
 
