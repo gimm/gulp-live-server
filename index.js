@@ -121,7 +121,7 @@ exports.start = function () {
     }
 
     var deferred = Q.defer();
-    server = spawn('node', config.args, config.options);
+    server = spawn(process.execPath, config.args, config.options);
     server.stdout.setEncoding('utf8');
     server.stderr.setEncoding('utf8');
 
@@ -134,11 +134,13 @@ exports.start = function () {
         callback.serverError(data);
     });
     server.once('exit', function (code, sig) {
-        deferred.resolve({
-            code: code,
-            signal: sig
-        });
-        callback.serverExit(code, sig);
+        setTimeout(function() { // yield event loop for stdout/stderr
+          deferred.resolve({
+              code: code,
+              signal: sig
+          });
+          callback.serverExit(code, sig);
+        }, 0)
     });
 
     process.listeners('exit') || process.once('exit', callback.processExit);
