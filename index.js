@@ -134,11 +134,13 @@ exports.start = function () {
         callback.serverError(data);
     });
     server.once('exit', function (code, sig) {
-        deferred.resolve({
-            code: code,
-            signal: sig
-        });
-        callback.serverExit(code, sig);
+        setTimeout(function() { // yield event loop for stdout/stderr
+          deferred.resolve({
+              code: code,
+              signal: sig
+          });
+          callback.serverExit(code, sig);
+        }, 0)
     });
 
     process.listeners('exit') || process.once('exit', callback.processExit);
