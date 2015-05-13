@@ -73,10 +73,16 @@ describe('gulp-live-server', function () {
     });
 
     describe('simple new server', function(){
-        var server = undefined;
+        var server;
         var req = request('http://localhost:3000');
         before('start server', function(done){
-            gls.new(gls.script).start().then(null, null, function(){
+            server = gls.new(gls.script);
+            server.start().then(null, null, function(){
+                done();
+            }).done();
+        });
+        after('stop server', function (done) {
+            server.stop().then(function () {
                 done();
             }).done();
         });
