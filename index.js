@@ -107,7 +107,7 @@ exports.static = function (folder, port) {
 /**
 * start/restart the server
 */
-exports.start = function () {
+exports.start = function (execPath) {
     if (server) { // server already running
         debug(info('kill server'));
         server.kill('SIGKILL');
@@ -120,8 +120,12 @@ exports.start = function () {
         }
     }
 
+    // if a executable is specified use that to start the server (e.g. coffeescript)
+    // otherwise use the currents process executable
+    execPath = execPath || process.execPath
+
     var deferred = Q.defer();
-    server = spawn(process.execPath, config.args, config.options);
+    server = spawn(execPath, config.args, config.options);
     server.stdout.setEncoding('utf8');
     server.stderr.setEncoding('utf8');
 

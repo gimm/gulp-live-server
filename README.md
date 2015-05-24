@@ -95,6 +95,10 @@ Usage
         var server = gls('myapp.js', undefined, 12345);
         server.start();
 
+        //4. start with coffee-script executable e.g. installed with npm
+        var server = gls('myapp.coffee');
+        server.start('node_modules/coffee-script/bin/coffee');
+
         //use gulp.watch to trigger server actions(notify, start or stop)
     	gulp.watch(['static/**/*.css', 'static/**/*.html'], server.notify);
         gulp.watch('myapp.js', server.start); //restart my server
@@ -139,7 +143,8 @@ will be mixin into the default value:
 **`static` and `new` are just shortcuts for this.**
 Usually, `static` and `new` will serve you well, but you can get more customized server with `gls`.
 
-### start()
+### start([execPath])
+- `execPath` - `String` The executable that is used to start the server. If none is given the current node executable is used.
 - return [promise](https://github.com/kriskowal/q/wiki/API-Reference) from [Q](https://www.npmjs.com/package/q)
 
 Spawn a new child process based on the configuration.
