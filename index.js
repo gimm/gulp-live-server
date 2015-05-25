@@ -170,7 +170,7 @@ exports.stop = function () {
     }else{
         deferred.resolve(0);
     }
-    if(lr){
+    if(this.lr){
         debug(info('close livereload server'));
         this.lr.close();
         //TODO how to stop tiny-lr from hanging the terminal
