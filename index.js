@@ -14,10 +14,7 @@ var util = require('util'),
     chalk = require('chalk'),
     debug = require('debug')('gulp-live-server');
 
-var config = {},
-    server = undefined, // the server child process
-    lr = undefined, // tiny-lr server
-    info = chalk.gray,
+var info = chalk.gray,
     error = chalk.bold.red;
 
 var callback = {
@@ -35,7 +32,7 @@ var callback = {
     },
 
     lrServerReady: function () {
-        console.log(info('livereload[tiny-lr] listening on %s ...'), config.livereload.port);
+        console.log(info('livereload[tiny-lr] listening on %s ...'), this.config.livereload.port);
     },
 
     serverLog: function (data) {
@@ -60,10 +57,11 @@ module.exports = exports = (function() {
             port: 35729
         }
     };
-    defaults.options.env = process.env;
+    defaults.options.env = Object.create(process.env);
     defaults.options.env.NODE_ENV = 'development';
 
     return function(args, options, livereload){
+        var config = {}
         config.args = util.isArray(args) ? args : [args];
         //deal with options
         config.options = merge(defaults.options, options || {});
@@ -73,7 +71,13 @@ module.exports = exports = (function() {
         }else{
             config.livereload = (livereload === false ? false : defaults.livereload);
         }
-        return exports;
+        // return exports with its state, the server and livereload instance
+        // this allows multiple servers at once
+        return merge({
+          config: config,
+          server: undefined, // the server child process
+          lr: undefined, // tiny-lr serverexports;
+        }, exports);
     };
 })();
 
@@ -108,32 +112,32 @@ exports.static = function (folder, port) {
 * start/restart the server
 */
 exports.start = function () {
-    if (server) { // server already running
+    if (this.server) { // server already running
         debug(info('kill server'));
-        server.kill('SIGKILL');
+        this.server.kill('SIGKILL');
         //server.removeListener('exit', callback.serverExit);
-        server = undefined;
+        this.server = undefined;
     } else {
-        if(config.livereload){
-            lr = tinylr(config.livereload);
-            lr.listen(config.livereload.port, callback.lrServerReady);
+        if(this.config.livereload){
+            this.lr = tinylr(this.config.livereload);
+            this.lr.listen(this.config.livereload.port, callback.lrServerReady.bind(this));
         }
     }
 
     var deferred = Q.defer();
-    server = spawn(process.execPath, config.args, config.options);
-    server.stdout.setEncoding('utf8');
-    server.stderr.setEncoding('utf8');
+    this.server = spawn(process.execPath, this.config.args, this.config.options);
+    this.server.stdout.setEncoding('utf8');
+    this.server.stderr.setEncoding('utf8');
 
-    server.stdout.on('data', function (data) {
+    this.server.stdout.on('data', function (data) {
         deferred.notify(data);
         callback.serverLog(data);
     });
-    server.stderr.on('data', function (data) {
+    this.server.stderr.on('data', function (data) {
         deferred.notify(data);
         callback.serverError(data);
     });
-    server.once('exit', function (code, sig) {
+    this.server.once('exit', function (code, sig) {
         setTimeout(function() { // yield event loop for stdout/stderr
           deferred.resolve({
               code: code,
@@ -153,24 +157,24 @@ exports.start = function () {
 */
 exports.stop = function () {
     var deferred = Q.defer();
-    if (server) {
-        server.once('exit', function (code) {
+    if (this.server) {
+        this.server.once('exit', function (code) {
             deferred.resolve(code);
         });
 
         debug(info('kill server'));
         //use SIGHUP instead of SIGKILL, see issue #34
-        server.kill('SIGKILL');
+        this.server.kill('SIGKILL');
         //server.removeListener('exit', callback.serverExit);
-        server = undefined;
+        this.server = undefined;
     }else{
         deferred.resolve(0);
     }
-    if(lr){
+    if(this.lr){
         debug(info('close livereload server'));
-        lr.close();
+        this.lr.close();
         //TODO how to stop tiny-lr from hanging the terminal
-        lr = undefined;
+        this.lr = undefined;
     }
 
     return deferred.promise;
@@ -183,13 +187,13 @@ exports.notify = function (event) {
     if(event && event.path){
         var filepath = path.relative(__dirname, event.path);
         debug(info('file(s) changed: %s'), event.path);
-        lr.changed({body: {files: [filepath]}});
+        this.lr.changed({body: {files: [filepath]}});
     }
 
     return es.map(function(file, done) {
         var filepath = path.relative(__dirname, file.path);
         debug(info('file(s) changed: %s'), filepath);
-        lr.changed({body: {files: [filepath]}});
+        this.lr.changed({body: {files: [filepath]}});
         done(null, file);
     });
 };
