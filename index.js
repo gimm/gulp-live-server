@@ -112,7 +112,7 @@ exports.static = function (folder, port) {
 * start/restart the server
 */
 exports.start = function (execPath) {
-    if (server) { // server already running
+    if (this.server) { // server already running
         debug(info('kill server'));
         this.server.kill('SIGKILL');
         //server.removeListener('exit', callback.serverExit);
