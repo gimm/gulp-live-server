@@ -191,13 +191,13 @@ exports.notify = function (event) {
     if(event && event.path){
         var filepath = path.relative(__dirname, event.path);
         debug(info('file(s) changed: %s'), event.path);
-        this.lr.changed({body: {files: [filepath]}});
+        exports.lr.changed({body: {files: [filepath]}});
     }
 
     return es.map(function(file, done) {
         var filepath = path.relative(__dirname, file.path);
         debug(info('file(s) changed: %s'), filepath);
-        this.lr.changed({body: {files: [filepath]}});
+        exports.lr.changed({body: {files: [filepath]}});
         done(null, file);
     });
 };
