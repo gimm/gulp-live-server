@@ -54,9 +54,7 @@ Usage
     	server.start();
 
         //use gulp.watch to trigger server actions(notify, start or stop)
-    	gulp.watch(['static/**/*.css', 'static/**/*.html'], function () {
-            server.notify.apply(server, arguments);
-        });
+    	gulp.watch(['static/**/*.css', 'static/**/*.html'], server.notify);
 	});
     ```
 - Serve with your own script file
@@ -74,9 +72,7 @@ Usage
     	server.start();
 
         //use gulp.watch to trigger server actions(notify, start or stop)
-    	gulp.watch(['static/**/*.css', 'static/**/*.html'], function () {
-            server.notify.apply(server, arguments);
-        });
+    	gulp.watch(['static/**/*.css', 'static/**/*.html'], server.notify);
         gulp.watch('myapp.js', server.start); //restart my server
 	});
     ```
@@ -104,9 +100,7 @@ Usage
         server.start('node_modules/coffee-script/bin/coffee');
 
         //use gulp.watch to trigger server actions(notify, start or stop)
-    	gulp.watch(['static/**/*.css', 'static/**/*.html'], function () {
-            server.notify.apply(server, arguments);
-        });
+    	gulp.watch(['static/**/*.css', 'static/**/*.html'], server.notify);
         gulp.watch('myapp.js', server.start); //restart my server
     });
     ```
