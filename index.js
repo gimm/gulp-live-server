@@ -17,8 +17,11 @@ var util = require('util'),
 var info = chalk.gray,
     error = chalk.bold.red;
 
+var glsInstanceCounter = 0;
+
 var callback = {
     processExit: function (code, sig, server) {
+        glsInstanceCounter--;
         debug(info('Main process exited with [code => %s | sig => %s]'), code, sig);
         server && server.kill();
     },
@@ -147,15 +150,17 @@ exports.start = function (execPath) {
               code: code,
               signal: sig
           });
-          // callback.serverExit(code, sig);
+          if (glsInstanceCounter == 0)
+            callback.serverExit(code, sig);
         }, 0)
     });
 
-    var exit = function(code, sig){
+    var exit = function(code, sig) {
       callback.processExit(code,sig,server);
     }
     process.listeners('exit') || process.once('exit', exit);
 
+    glsInstanceCounter++;
     return deferred.promise;
 };
 
