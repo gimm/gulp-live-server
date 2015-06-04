@@ -18,7 +18,7 @@ var info = chalk.gray,
     error = chalk.bold.red;
 
 var callback = {
-    processExit: function (code, sig) {
+    processExit: function (code, sig, server) {
         debug(info('Main process exited with [code => %s | sig => %s]'), code, sig);
         server && server.kill();
     },
@@ -147,11 +147,14 @@ exports.start = function (execPath) {
               code: code,
               signal: sig
           });
-          callback.serverExit(code, sig);
+          // callback.serverExit(code, sig);
         }, 0)
     });
 
-    process.listeners('exit') || process.once('exit', callback.processExit);
+    var exit = function(code, sig){
+      callback.processExit(code,sig,server);
+    }
+    process.listeners('exit') || process.once('exit', exit);
 
     return deferred.promise;
 };
@@ -201,3 +204,4 @@ exports.notify = function (event) {
         done(null, file);
     });
 };
+
