@@ -79,7 +79,7 @@ module.exports = exports = (function() {
         return merge({
           config: config,
           server: undefined, // the server child process
-          lr: undefined, // tiny-lr serverexports;
+          lr: undefined // tiny-lr serverexports;
         }, exports);
     };
 })();
