@@ -60,7 +60,7 @@ module.exports = exports = (function() {
             port: 35729
         }
     };
-    defaults.options.env = Object.create(process.env);
+    defaults.options.env = JSON.parse(JSON.stringify(process.env));
     defaults.options.env.NODE_ENV = 'development';
 
     return function(args, options, livereload){
