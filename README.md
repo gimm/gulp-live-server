@@ -170,7 +170,7 @@ Tell livereload.js to reload the changed resource(s)
 
 livereload.js
 ---
-glup-live-server comes with [tiny-lr](https://github.com/mklabs/tiny-lr/) built in, which works as a livereload server. `livereload.js` is **served** by `tiny-lr`, but in order to get it loaded with your page, you have 3 options( to **inject** `<script src="//localhost:35729/livereload.js"></script>` into your page):
+gulp-live-server comes with [tiny-lr](https://github.com/mklabs/tiny-lr/) built in, which works as a livereload server. `livereload.js` is **served** by `tiny-lr`, but in order to get it loaded with your page, you have 3 options( to **inject** `<script src="//localhost:35729/livereload.js"></script>` into your page):
 - [LiveReload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en) for Chrome;
 - Use [connect-livereload](https://github.com/intesso/connect-livereload) middleware;
 - Add [livereload.js](https://github.com/livereload/livereload-js) in your page mannully;
