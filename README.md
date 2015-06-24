@@ -97,7 +97,11 @@ Usage
 
         //3. customize livereload server, e.g. port number
         var server = gls('myapp.js', undefined, 12345);
-        server.start();
+        var promise = server.start();
+        //optionally handle the server process exiting
+        promise.then(function(result) {
+            //log, exit, re-start, etc...
+        });
 
         //4. start with coffee-script executable e.g. installed with npm
         var server = gls('myapp.coffee');
@@ -151,7 +155,7 @@ Usually, `static` and `new` will serve you well, but you can get more customized
 
 ### start([execPath])
 - `execPath` - `String` The executable that is used to start the server. If none is given the current node executable is used.
-- return [promise](https://github.com/kriskowal/q/wiki/API-Reference) from [Q](https://www.npmjs.com/package/q)
+- return [promise](https://github.com/kriskowal/q/wiki/API-Reference) from [Q](https://www.npmjs.com/package/q), resolved with the server process exits.
 
 Spawn a new child process based on the configuration.
 - use [`ChildProcess.spawn`](http://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options) to start a node process;
