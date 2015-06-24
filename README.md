@@ -77,7 +77,7 @@ Usage
     	gulp.watch(['static/**/*.css', 'static/**/*.html'], function () {
             server.notify.apply(server, arguments);
         });
-        gulp.watch('myapp.js', server.start); //restart my server
+        gulp.watch('myapp.js', server.start.bind(server)); //restart my server
 	});
     ```
 
@@ -107,7 +107,7 @@ Usage
     	gulp.watch(['static/**/*.css', 'static/**/*.html'], function () {
             server.notify.apply(server, arguments);
         });
-        gulp.watch('myapp.js', server.start); //restart my server
+        gulp.watch('myapp.js', server.start.bind(server)); //restart my server
     });
     ```
 
