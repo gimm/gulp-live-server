@@ -77,7 +77,7 @@ Usage
     	gulp.watch(['static/**/*.css', 'static/**/*.html'], function () {
             server.notify.apply(server, arguments);
         });
-        gulp.watch('myapp.js', server.start); //restart my server
+        gulp.watch('myapp.js', server.start.bind(server)); //restart my server
 	});
     ```
 
@@ -97,7 +97,11 @@ Usage
 
         //3. customize livereload server, e.g. port number
         var server = gls('myapp.js', undefined, 12345);
-        server.start();
+        var promise = server.start();
+        //optionally handle the server process exiting
+        promise.then(function(result) {
+            //log, exit, re-start, etc...
+        });
 
         //4. start with coffee-script executable e.g. installed with npm
         var server = gls('myapp.coffee');
@@ -107,7 +111,7 @@ Usage
     	gulp.watch(['static/**/*.css', 'static/**/*.html'], function () {
             server.notify.apply(server, arguments);
         });
-        gulp.watch('myapp.js', server.start); //restart my server
+        gulp.watch('myapp.js', server.start.bind(server)); //restart my server
     });
     ```
 
@@ -151,7 +155,7 @@ Usually, `static` and `new` will serve you well, but you can get more customized
 
 ### start([execPath])
 - `execPath` - `String` The executable that is used to start the server. If none is given the current node executable is used.
-- return [promise](https://github.com/kriskowal/q/wiki/API-Reference) from [Q](https://www.npmjs.com/package/q)
+- return [promise](https://github.com/kriskowal/q/wiki/API-Reference) from [Q](https://www.npmjs.com/package/q), resolved with the server process exits.
 
 Spawn a new child process based on the configuration.
 - use [`ChildProcess.spawn`](http://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options) to start a node process;
@@ -170,7 +174,7 @@ Tell livereload.js to reload the changed resource(s)
 
 livereload.js
 ---
-glup-live-server comes with [tiny-lr](https://github.com/mklabs/tiny-lr/) built in, which works as a livereload server. `livereload.js` is **served** by `tiny-lr`, but in order to get it loaded with your page, you have 3 options( to **inject** `<script src="//localhost:35729/livereload.js"></script>` into your page):
+gulp-live-server comes with [tiny-lr](https://github.com/mklabs/tiny-lr/) built in, which works as a livereload server. `livereload.js` is **served** by `tiny-lr`, but in order to get it loaded with your page, you have 3 options( to **inject** `<script src="//localhost:35729/livereload.js"></script>` into your page):
 - [LiveReload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en) for Chrome;
 - Use [connect-livereload](https://github.com/intesso/connect-livereload) middleware;
 - Add [livereload.js](https://github.com/livereload/livereload-js) in your page mannully;
