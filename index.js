@@ -17,8 +17,11 @@ var util = require('util'),
 var info = chalk.gray,
     error = chalk.bold.red;
 
+var glsInstanceCounter = 0;
+
 var callback = {
-    processExit: function (code, sig) {
+    processExit: function (code, sig, server) {
+        glsInstanceCounter--;
         debug(info('Main process exited with [code => %s | sig => %s]'), code, sig);
         server && server.kill();
     },
@@ -76,7 +79,7 @@ module.exports = exports = (function() {
         return merge({
           config: config,
           server: undefined, // the server child process
-          lr: undefined, // tiny-lr serverexports;
+          lr: undefined // tiny-lr serverexports;
         }, exports);
     };
 })();
@@ -147,12 +150,17 @@ exports.start = function (execPath) {
               code: code,
               signal: sig
           });
-          callback.serverExit(code, sig);
+          if (glsInstanceCounter == 0)
+            callback.serverExit(code, sig);
         }, 0)
     });
 
-    process.listeners('exit') || process.once('exit', callback.processExit);
+    var exit = function(code, sig) {
+      callback.processExit(code,sig,server);
+    }
+    process.listeners('exit') || process.once('exit', exit);
 
+    glsInstanceCounter++;
     return deferred.promise;
 };
 
@@ -201,3 +209,4 @@ exports.notify = function (event) {
         done(null, file);
     });
 };
+
