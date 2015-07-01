@@ -129,10 +129,9 @@ exports.start = function (execPath) {
 
     // if a executable is specified use that to start the server (e.g. coffeescript)
     // otherwise use the currents process executable
-    execPath = execPath || process.execPath
-
+    this.config.execPath =  execPath || this.config.execPath || process.execPath;
     var deferred = Q.defer();
-    this.server = spawn(execPath, this.config.args, this.config.options);
+    this.server = spawn(this.config.execPath, this.config.args, this.config.options);
     this.server.stdout.setEncoding('utf8');
     this.server.stderr.setEncoding('utf8');
 
