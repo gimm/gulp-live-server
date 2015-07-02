@@ -179,7 +179,7 @@ gulp-live-server comes with [tiny-lr](https://github.com/mklabs/tiny-lr/) built 
 - Use [connect-livereload](https://github.com/intesso/connect-livereload) middleware;
 - Add [livereload.js](https://github.com/livereload/livereload-js) in your page mannully;
 
-Usually, if `http://livereload:35729/livereload.js` is accessible, then your livereload server is ok, if you don't have the script tag for livereload.js in you page, you've problem with either your chrome plugin or the connect-livereload middle-ware as mentioned above.
+Usually, if `http://localhost:35729/livereload.js` is accessible, then your livereload server is ok, if you don't have the script tag for livereload.js in you page, you've problem with either your chrome plugin or the connect-livereload middle-ware as mentioned above.
 
 DEBUG
 ---
