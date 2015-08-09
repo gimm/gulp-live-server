@@ -37,81 +37,81 @@ Usage
 ---
 - Serve a static folder(`gls.script`<'scripts/static.js'> is used as server script)
 
-	```js
+  ```js
     var gulp = require('gulp');
     var gls = require('gulp-live-server');
     gulp.task('serve', function() {
-        //1. serve with default settings
-    	var server = gls.static(); //equals to gls.static('public', 3000);
-    	server.start();
+    //1. serve with default settings
+    var server = gls.static(); //equals to gls.static('public', 3000);
+    server.start();
 
-        //2. serve at custom port
-    	var server = gls.static('dist', 8888);
-    	server.start();
+    //2. serve at custom port
+    var server = gls.static('dist', 8888);
+    server.start();
 
-        //3. serve multi folders
-    	var server = gls.static(['dist', '.tmp']);
-    	server.start();
+    //3. serve multi folders
+    var server = gls.static(['dist', '.tmp']);
+    server.start();
 
-        //use gulp.watch to trigger server actions(notify, start or stop)
-    	gulp.watch(['static/**/*.css', 'static/**/*.html'], function () {
-            server.notify.apply(server, arguments);
-        });
-	});
+    //use gulp.watch to trigger server actions(notify, start or stop)
+    gulp.watch(['static/**/*.css', 'static/**/*.html'], function (file) {
+      server.notify.apply(server, [file]);
+    });
+  });
     ```
 - Serve with your own script file
 
-	```js
+  ```js
     gulp.task('serve', function() {
-        //1. run your script as a server
-    	var server = gls.new('myapp.js');
-    	server.start();
+      //1. run your script as a server
+      var server = gls.new('myapp.js');
+      server.start();
 
-        //2. run script with cwd args, e.g. the harmony flag
-    	var server = gls.new(['--harmony', 'myapp.js']);
-        //this will achieve `node --harmony myapp.js`
-        //you can access cwd args in `myapp.js` via `process.argv`
-    	server.start();
+      //2. run script with cwd args, e.g. the harmony flag
+      var server = gls.new(['--harmony', 'myapp.js']);
+      //this will achieve `node --harmony myapp.js`
+      //you can access cwd args in `myapp.js` via `process.argv`
+      server.start();
 
-        //use gulp.watch to trigger server actions(notify, start or stop)
-    	gulp.watch(['static/**/*.css', 'static/**/*.html'], function () {
-            server.notify.apply(server, arguments);
-        });
-        gulp.watch('myapp.js', server.start.bind(server)); //restart my server
-	});
+      //use gulp.watch to trigger server actions(notify, start or stop)
+      gulp.watch(['static/**/*.css', 'static/**/*.html'], function (file) {
+        server.notify.apply(server, [file]);
+      });
+      gulp.watch('myapp.js', server.start.bind(server)); //restart my server
+  });
     ```
 
 - Customized serving with gls
 
-	```js
+  ```js
     gulp.task('serve', function() {
-        //1. gls is the base for `static` and `new`
-    	var server = gls([gls.script, 'static', 8000]);
-        //equals gls.new([gls.script, 'static', 8000]);
-        //equals gls.static('static', 8000);
-    	server.start();
+      //1. gls is the base for `static` and `new`
+      var server = gls([gls.script, 'static', 8000]);
+      //equals gls.new([gls.script, 'static', 8000]);
+      //equals gls.static('static', 8000);
+      server.start();
 
-        //2. set running options for the server, e.g. NODE_ENV
-        var server = gls('myapp.js', {env: {NODE_ENV: 'development'}});
-    	server.start();
+      //2. set running options for the server, e.g. NODE_ENV
+      var server = gls('myapp.js', {env: {NODE_ENV: 'development'}});
+      server.start();
 
-        //3. customize livereload server, e.g. port number
-        var server = gls('myapp.js', undefined, 12345);
-        var promise = server.start();
-        //optionally handle the server process exiting
-        promise.then(function(result) {
-            //log, exit, re-start, etc...
-        });
+      //3. customize livereload server, e.g. port number
+      var server = gls('myapp.js', undefined, 12345);
+      var promise = server.start();
+      //optionally handle the server process exiting
+      promise.then(function(result) {
+        //log, exit, re-start, etc...
+      });
 
-        //4. start with coffee-script executable e.g. installed with npm
-        var server = gls('myapp.coffee');
-        server.start('node_modules/coffee-script/bin/coffee');
+      //4. start with coffee-script executable e.g. installed with npm
+      var server = gls('myapp.coffee');
+      server.start('node_modules/coffee-script/bin/coffee');
 
-        //use gulp.watch to trigger server actions(notify, start or stop)
-    	gulp.watch(['static/**/*.css', 'static/**/*.html'], function () {
-            server.notify.apply(server, arguments);
-        });
-        gulp.watch('myapp.js', server.start.bind(server)); //restart my server
+      //use gulp.watch to trigger server actions(notify, start or stop)
+      gulp.watch(['static/**/*.css', 'static/**/*.html'], function (file) {
+        server.notify.apply(server, [file]);
+      });
+      gulp.watch('myapp.js', server.start.bind(server)); //restart my server
     });
     ```
 
