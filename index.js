@@ -206,6 +206,6 @@ exports.notify = function (event) {
         debug(info('file(s) changed: %s'), filepath);
         this.lr.changed({body: {files: [filepath]}});
         done(null, file);
-    });
+    }.bind(this));
 };
 
