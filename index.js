@@ -132,17 +132,23 @@ exports.start = function (execPath) {
     this.config.execPath =  execPath || this.config.execPath || process.execPath;
     var deferred = Q.defer();
     this.server = spawn(this.config.execPath, this.config.args, this.config.options);
-    this.server.stdout.setEncoding('utf8');
-    this.server.stderr.setEncoding('utf8');
 
-    this.server.stdout.on('data', function (data) {
-        deferred.notify(data);
-        callback.serverLog(data);
-    });
-    this.server.stderr.on('data', function (data) {
-        deferred.notify(data);
-        callback.serverError(data);
-    });
+    //stdout and stderr will not be set if using the { stdio: 'inherit' } options for spawn
+    if (this.server.stdout) {
+        this.server.stdout.setEncoding('utf8');
+        this.server.stdout.on('data', function(data) {
+            deferred.notify(data);
+            callback.serverLog(data);
+        });
+    }
+    if (this.server.stderr) {
+        this.server.stderr.setEncoding('utf8');
+        this.server.stderr.on('data', function (data) {
+            deferred.notify(data);
+            callback.serverError(data);
+        });
+    }
+
     this.server.once('exit', function (code, sig) {
         setTimeout(function() { // yield event loop for stdout/stderr
           deferred.resolve({
