@@ -93,5 +93,27 @@ describe('gulp-live-server', function () {
         });
     });
 
+    describe('spawn options', function() {
+        var server;
+        afterEach(function(done) {
+            if (!server) {
+                done();
+                return;
+            }
+
+            server.stop().then(function() {
+                done();
+            }).done();
+        });
+
+        it('should not explode if stdio is set to "inherit"', function(done) {
+            var options = {
+                stdio: 'inherit'
+            };
+            server = gls(gls.script, options, false);
+            server.start();
+            done();
+        });
+    });
 
 });
