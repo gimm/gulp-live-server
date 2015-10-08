@@ -78,6 +78,11 @@ Usage
         server.notify.apply(server, [file]);
       });
       gulp.watch('myapp.js', server.start.bind(server)); //restart my server
+      
+      // Note: try wrapping in a function if getting an error like `TypeError: Bad argument at TypeError (native) at ChildProcess.spawn`
+      gulp.watch('myapp.js', function() {
+        server.start.bind(server)()
+      });
   });
     ```
 
@@ -112,6 +117,11 @@ Usage
         server.notify.apply(server, [file]);
       });
       gulp.watch('myapp.js', server.start.bind(server)); //restart my server
+      
+      // Note: try wrapping in a function if getting an error like `TypeError: Bad argument at TypeError (native) at ChildProcess.spawn`
+      gulp.watch('myapp.js', function() {
+        server.start.bind(server)()
+      });
     });
     ```
 
