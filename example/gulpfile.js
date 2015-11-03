@@ -4,7 +4,9 @@ var gls = require('../index.js');
 gulp.task('static', function() {
     var server = gls.static('static', 8000);
     server.start();
-    gulp.watch(['static/**/*.css', 'static/**/*.html'], server.notify);
+    gulp.watch(['static/**/*.css', 'static/**/*.html'], function(file) {
+        server.notify.apply(server, [file]);
+    });
 });
 
 gulp.task('custom', function() {
@@ -13,6 +15,8 @@ gulp.task('custom', function() {
         console.log('Server exited with result:', result);
         process.exit(result.code);
     });
-    gulp.watch(['static/**/*.css', 'static/**/*.html'], server.notify);
+    gulp.watch(['static/**/*.css', 'static/**/*.html'], function(file) {
+        server.notify.apply(server, [file]);
+    });
     gulp.watch('server.js', server.start);
 });
