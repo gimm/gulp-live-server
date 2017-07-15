@@ -33,7 +33,7 @@
     "event-stream": "~3.2.1",
     "q": "^1.2.0",
     "serve-static": "^1.9.1",
-    "tiny-lr": "0.0.9"
+    "tiny-lr": "^1.0.3"
   },
   "readmeFilename": "README.md",
   "bugs": {
