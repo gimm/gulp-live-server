@@ -39,11 +39,11 @@ var callback = {
     },
 
     serverLog: function (data) {
-        console.log(info(data.trim()));
+        console.log(data.replace(/\s+$/, ''));
     },
 
     serverError: function (data) {
-        console.log(error(data.trim()));
+        console.log(error(data.replace(/\s+$/, '')));
     }
 };
 
